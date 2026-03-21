@@ -26,35 +26,9 @@ Database: MongoDB
 
 Authentication: Google OAuth (optional for production)
 
-🛠 Setup Instructions
-
-1. Clone the Repository
-
-git clone https://github.com/yourusername/neu-library-visitor-log.git
-cd neu-library-visitor-log
-
-2. Install Node Modules
-
-# Backend
-cd backend
-npm install
-npm start
-
-# Frontend
-cd frontend
-npm install
-npm start
-
-3. Environment Variables
-
-Create a .env file inside the backend/ folder:
-
-MONGO_URI=your_mongodb_connection_string
-COOKIE_KEY=your_secret_key
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-
 📊 Admin Dashboard
+TYPE
+jcesperanza@neu.edu.ph
 
 Admins can view visitor logs with filters for:
 
@@ -67,3 +41,5 @@ Major
 Purpose
 
 Date
+
+LINK: https://peaceful-llama-78366d.netlify.app/
