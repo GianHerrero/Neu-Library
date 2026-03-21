@@ -1,45 +1,40 @@
-# NEU Library Visitor Log
+NEU Library Visitor Log
 
-A web application for New Era University Library visitor tracking with **Google OAuth login**, **role-based access control**, and an **admin analytics dashboard**.
+A web application for New Era University Library visitor tracking. It allows students and faculty to log their visits, select their purpose, and provides administrators with a dashboard to view and analyze visitor data.
 
----
+🚀 Live Application
 
-## 🚀 Live Application
-[Deployed App Link](https://neu-library-log.onrender.com)
+Deployed App Link
 
----
+📖 Features
 
-## 📌 Features
-- **Google Login**: Secure authentication using Google OAuth.
-- **Role-Based Access Control**:
-  - **Regular User** (`jcesperanza@neu.edu.ph`):
-    - Greeted with: *“Welcome to NEU Library!”*
-  - **Admin** (`jcesperanza@neu.edu.ph`):
-    - Access to visitor statistics dashboard.
-    - Stats displayed in **cards** (Today, Week, Date Range).
-    - Filters by:
-      - Reason for visiting the library
-      - College
-      - Employee status (teacher/staff)
+NEU email login (restricted to @neu.edu.ph addresses)
 
----
+Visitor Dashboard: select purpose (Reading, Borrowing, Research, Other)
 
-## 🛠️ Tech Stack
-- **Frontend**: React.js, Axios
-- **Backend**: Node.js, Express.js, Passport.js (Google OAuth)
-- **Database**: MongoDB (Mongoose)
-- **Deployment**: Render (backend), Netlify/Vercel (frontend)
+Admin Dashboard: view all visitor logs with email, college, major, purpose, and timestamp
 
----
+MongoDB database integration for persistent storage
 
-## ⚙️ Setup Instructions
+🛠 Tech Stack
 
-### 1. Clone the Repository
-```bash
+Frontend: React
+
+Backend: Node.js + Express
+
+Database: MongoDB
+
+Authentication: Google OAuth (optional for production)
+
+🛠 Setup Instructions
+
+1. Clone the Repository
+
 git clone https://github.com/yourusername/neu-library-visitor-log.git
 cd neu-library-visitor-log
 
-### 2. Install node modules on terminal
+2. Install Node Modules
+
 # Backend
 cd backend
 npm install
@@ -49,3 +44,26 @@ npm start
 cd frontend
 npm install
 npm start
+
+3. Environment Variables
+
+Create a .env file inside the backend/ folder:
+
+MONGO_URI=your_mongodb_connection_string
+COOKIE_KEY=your_secret_key
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+📊 Admin Dashboard
+
+Admins can view visitor logs with filters for:
+
+Email
+
+College
+
+Major
+
+Purpose
+
+Date
