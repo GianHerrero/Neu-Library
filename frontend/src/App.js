@@ -42,6 +42,9 @@ const collegeMajors = {
   "School of International Relations": ["AB Foreign Service"]
 };
 
+// Use environment variable for backend URL
+const API_BASE = process.env.REACT_APP_API_URL;
+
 function App() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
@@ -49,7 +52,7 @@ function App() {
   const [major, setMajor] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/user", { withCredentials: true })
+    axios.get(`${API_BASE}/api/user`, { withCredentials: true })
       .then(res => setUser(res.data))
       .catch(() => setUser(null));
   }, []);
@@ -140,7 +143,7 @@ function VisitorDashboard({ onLogout, email, college, major }) {
   const [message, setMessage] = useState("");
 
   const handleSelect = (purpose) => {
-    axios.post("http://localhost:5000/api/visitor", { email, college, major, purpose })
+    axios.post(`${API_BASE}/api/visitor`, { email, college, major, purpose })
       .then(() => {
         setMessage("Access Granted");
         setTimeout(() => { onLogout(); }, 2000);
@@ -170,7 +173,7 @@ function AdminDashboard({ onLogout }) {
   const [visitors, setVisitors] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/admin/visitors", { withCredentials: true })
+    axios.get(`${API_BASE}/api/admin/visitors`, { withCredentials: true })
       .then(res => setVisitors(res.data))
       .catch(err => console.error(err));
   }, []);
