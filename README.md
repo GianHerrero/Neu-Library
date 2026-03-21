@@ -38,3 +38,14 @@ A web application for New Era University Library visitor tracking with **Google 
 ```bash
 git clone https://github.com/yourusername/neu-library-visitor-log.git
 cd neu-library-visitor-log
+
+### 2. Install node modules on terminal
+# Backend
+cd backend
+npm install
+npm start
+
+# Frontend
+cd frontend
+npm install
+npm start
