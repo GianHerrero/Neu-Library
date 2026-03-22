@@ -8,7 +8,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: [
-    "http://localhost:3000", 
+    "http://localhost:3000",
     "https://your-netlify-site.netlify.app" // replace with your actual Netlify URL
   ],
   credentials: true
@@ -16,12 +16,9 @@ app.use(cors({
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {   // ✅ matches your Render env variable
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("✅ Connected to MongoDB"))
-.catch(err => console.error("❌ MongoDB connection error:", err));
+mongoose.connect(process.env.MONGO_URI)   // ✅ matches your Render env variable
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
 
 // Visitor schema (purpose only)
 const VisitorSchema = new mongoose.Schema({
