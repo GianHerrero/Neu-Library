@@ -30,20 +30,41 @@ const VisitorSchema = new mongoose.Schema({
 });
 const Visitor = mongoose.model('Visitor', VisitorSchema);
 
-// POST /api/visitor
+// visitorRoutes.js (or inside server.js)
 app.post('/api/visitor', async (req, res) => {
   try {
-    // Debug: log incoming payload
-    console.log("Visitor payload received:", req.body);
+    // Debug: show incoming payload
+    console.log("Incoming visitor payload:", req.body);
 
     // Destructure fields
     const { email, college, major, purpose } = req.body;
 
     // Validate required fields
     if (!email || !college || !major || !purpose) {
-      console.warn("Missing fields:", { email, college, major, purpose });
+      console.warn("Validation failed. Missing fields:", { email, college, major, purpose });
       return res.status(400).json({ message: "Missing required fields" });
     }
+
+    // Create visitor document
+    const visitor = new Visitor({
+      email,
+      college,
+      major,
+      purpose,
+      date: new Date() // auto timestamp
+    });
+
+    // Save to MongoDB Atlas
+    const savedVisitor = await visitor.save();
+
+    console.log("Visitor saved:", savedVisitor);
+    return res.status(201).json(savedVisitor);
+
+  } catch (err) {
+    console.error("Error saving visitor:", err);
+    return res.status(500).json({ message: "Error saving visitor", error: err.message });
+  }
+});
 
     // Create and save visitor
     const visitor = new Visitor({
