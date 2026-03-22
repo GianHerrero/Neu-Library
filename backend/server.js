@@ -16,11 +16,20 @@ app.use(cors({
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+async function startServer() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("✅ Connected to MongoDB");
 
-// Visitor schema (full info)
+    // Start server only after DB connection
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+  }
+}
+
+// Visitor schema
 const VisitorSchema = new mongoose.Schema({
   email: { type: String, required: true },
   college: { type: String, required: true },
@@ -30,63 +39,28 @@ const VisitorSchema = new mongoose.Schema({
 });
 const Visitor = mongoose.model('Visitor', VisitorSchema);
 
-// visitorRoutes.js (or inside server.js)
+// Routes
 app.post('/api/visitor', async (req, res) => {
   try {
-    // Debug: show incoming payload
     console.log("Incoming visitor payload:", req.body);
 
-    // Destructure fields
     const { email, college, major, purpose } = req.body;
-
-    // Validate required fields
     if (!email || !college || !major || !purpose) {
       console.warn("Validation failed. Missing fields:", { email, college, major, purpose });
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Create visitor document
-    const visitor = new Visitor({
-      email,
-      college,
-      major,
-      purpose,
-      date: new Date() // auto timestamp
-    });
-
-    // Save to MongoDB Atlas
+    const visitor = new Visitor({ email, college, major, purpose });
     const savedVisitor = await visitor.save();
 
     console.log("Visitor saved:", savedVisitor);
     return res.status(201).json(savedVisitor);
-
   } catch (err) {
     console.error("Error saving visitor:", err);
     return res.status(500).json({ message: "Error saving visitor", error: err.message });
   }
 });
 
-    // Create and save visitor
-    const visitor = new Visitor({
-      email,
-      college,
-      major,
-      purpose,
-      date: new Date() // auto‑add timestamp
-    });
-
-    await visitor.save();
-
-    console.log("Visitor saved successfully:", visitor);
-    res.status(201).json(visitor);
-
-  } catch (err) {
-    console.error("Error saving visitor:", err);
-    res.status(500).json({ message: "Error saving visitor", error: err.message });
-  }
-});
-
-// Fetch all visitor logs
 app.get('/api/admin/visitors', async (req, res) => {
   try {
     const visitors = await Visitor.find().sort({ date: -1 });
@@ -98,4 +72,4 @@ app.get('/api/admin/visitors', async (req, res) => {
 });
 
 // Start server
-app.listen(5000, () => console.log('Backend running on port 5000'));
+startServer();
