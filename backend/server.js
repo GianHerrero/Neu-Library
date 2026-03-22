@@ -30,21 +30,38 @@ const VisitorSchema = new mongoose.Schema({
 });
 const Visitor = mongoose.model('Visitor', VisitorSchema);
 
-// Save visitor record
+// POST /api/visitor
 app.post('/api/visitor', async (req, res) => {
   try {
-    console.log("Visitor payload:", req.body); // Debug log
+    // Debug: log incoming payload
+    console.log("Visitor payload received:", req.body);
+
+    // Destructure fields
     const { email, college, major, purpose } = req.body;
 
+    // Validate required fields
     if (!email || !college || !major || !purpose) {
+      console.warn("Missing fields:", { email, college, major, purpose });
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const visitor = await Visitor.create({ email, college, major, purpose });
-    res.json(visitor);
+    // Create and save visitor
+    const visitor = new Visitor({
+      email,
+      college,
+      major,
+      purpose,
+      date: new Date() // auto‑add timestamp
+    });
+
+    await visitor.save();
+
+    console.log("Visitor saved successfully:", visitor);
+    res.status(201).json(visitor);
+
   } catch (err) {
     console.error("Error saving visitor:", err);
-    res.status(500).json({ message: 'Error saving visitor' });
+    res.status(500).json({ message: "Error saving visitor", error: err.message });
   }
 });
 
