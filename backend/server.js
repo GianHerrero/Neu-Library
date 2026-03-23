@@ -1,6 +1,6 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const { Pool } = require('pg');
 require('dotenv').config();
 
 const app = express();
@@ -15,29 +15,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// MongoDB connection
-async function startServer() {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ Connected to MongoDB");
-
-    // Start server only after DB connection
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
-  } catch (err) {
-    console.error("❌ MongoDB connection error:", err);
-  }
-}
-
-// Visitor schema
-const VisitorSchema = new mongoose.Schema({
-  email: { type: String, required: true },
-  college: { type: String, required: true },
-  major: { type: String, required: true },
-  purpose: { type: String, required: true },
-  date: { type: Date, default: Date.now }
+// PostgreSQL connection
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false } // required for Render
 });
-const Visitor = mongoose.model('Visitor', VisitorSchema);
 
 // Routes
 app.post('/api/visitor', async (req, res) => {
@@ -50,11 +32,15 @@ app.post('/api/visitor', async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const visitor = new Visitor({ email, college, major, purpose });
-    const savedVisitor = await visitor.save();
+    const result = await pool.query(
+      `INSERT INTO visitors (email, college, major, purpose)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [email, college, major, purpose]
+    );
 
-    console.log("Visitor saved:", savedVisitor);
-    return res.status(201).json(savedVisitor);
+    console.log("Visitor saved:", result.rows[0]);
+    return res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error("Error saving visitor:", err);
     return res.status(500).json({ message: "Error saving visitor", error: err.message });
@@ -63,8 +49,10 @@ app.post('/api/visitor', async (req, res) => {
 
 app.get('/api/admin/visitors', async (req, res) => {
   try {
-    const visitors = await Visitor.find().sort({ date: -1 });
-    res.json(visitors);
+    const result = await pool.query(
+      `SELECT * FROM visitors ORDER BY date DESC`
+    );
+    res.json(result.rows);
   } catch (err) {
     console.error("Error fetching visitors:", err);
     res.status(500).json({ message: 'Error fetching visitors' });
@@ -72,4 +60,5 @@ app.get('/api/admin/visitors', async (req, res) => {
 });
 
 // Start server
-startServer();
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
