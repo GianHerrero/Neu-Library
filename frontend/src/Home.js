@@ -1,4 +1,4 @@
-// src/pages/Home.js
+// src/Home.js
 import React from "react";
 
 export default function Home() {
