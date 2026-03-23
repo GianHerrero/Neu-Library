@@ -1,7 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import PurposeForm from "./pages/PurposeForm";
-import AdminDashboard from "./pages/AdminDashboard";
+import Home from "./Home";
 
 function App() {
   return (
