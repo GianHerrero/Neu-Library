@@ -5,16 +5,15 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://neu-library-05f4.onrender.com"], 
+    origin: ["http://localhost:3000", "https://neu-library-05f4.onrender.com"],
     credentials: true,
   })
 );
 app.use(express.json());
 
-// MongoDB connection
+
 const uri = process.env.MONGO_URI;
 if (!uri) {
   console.error("❌ MONGO_URI is not defined in .env");
@@ -29,35 +28,46 @@ mongoose
     process.exit(1);
   });
 
-// Visitor schema
 const VisitorSchema = new mongoose.Schema({
   email: { type: String, required: true },
-  college: { type: String, required: true },
-  major: { type: String, required: true },
+  role: { type: String, required: true },   
+  college: { type: String },               
+  major: { type: String },                 
   purpose: { type: String, required: true },
   date: { type: Date, default: Date.now },
 });
 const Visitor = mongoose.model("Visitor", VisitorSchema);
 
-// Save visitor record
+
 app.post("/api/visitor", async (req, res) => {
   try {
     console.log("Visitor payload:", req.body);
-    const { email, college, major, purpose } = req.body;
+    const { email, role, college, major, purpose } = req.body;
 
-    if (!email || !college || !major || !purpose) {
+    if (!email || !role || !purpose) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const visitor = await Visitor.create({ email, college, major, purpose });
-    res.status(201).json(visitor);
+    // Students must provide college + major
+    if (role === "student" && (!college || !major)) {
+      return res.status(400).json({ message: "College and major required for students" });
+    }
+
+    const visitor = await Visitor.create({
+      email,
+      role,
+      college: college || null,
+      major: major || null,
+      purpose,
+    });
+
+    res.status(201).json({ message: "Access Granted", visitor });
   } catch (err) {
     console.error("Error saving visitor:", err);
     res.status(500).json({ message: "Error saving visitor" });
   }
 });
 
-// Fetch all visitor logs
 app.get("/api/admin/visitors", async (req, res) => {
   try {
     const visitors = await Visitor.find().sort({ date: -1 });
@@ -68,6 +78,5 @@ app.get("/api/admin/visitors", async (req, res) => {
   }
 });
 
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));
