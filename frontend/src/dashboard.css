@@ -1,4 +1,3 @@
-
 .dashboard {
   background: url("./132029.jpg") no-repeat center center fixed;
   background-size: cover;
@@ -17,7 +16,6 @@
   align-items: center;
 }
 
-
 .welcome-box {
   background: white;
   padding: 40px;
@@ -33,7 +31,6 @@
   margin-bottom: 20px;
 }
 
-
 .email-input {
   width: 100%;
   padding: 12px;
@@ -42,7 +39,6 @@
   border-radius: 6px;
   font-size: 16px;
 }
-
 
 .login-btn {
   display: inline-block;
@@ -73,7 +69,6 @@
   background-color: #c9302c;
 }
 
-
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -101,7 +96,6 @@
   color: green;
 }
 
-
 .table-container {
   background: white;
   padding: 20px;
@@ -111,7 +105,7 @@
   margin: 40px auto;
   overflow-y: auto;      
   max-height: 400px;     
-
+}
 
 .visitor-table {
   width: 100%;
@@ -119,7 +113,6 @@
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
-
 
 .visitor-table th, .visitor-table td {
   border: 1px solid #ccc;
