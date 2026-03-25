@@ -14,7 +14,7 @@ Visitor Dashboard: select purpose (Reading, Borrowing, Research, Other)
 
 Admin Dashboard: view all visitor logs with email, college, major, purpose, and timestamp
 
-MongoDB database integration for persistent storage
+MongoDB Atlas database integration for persistent storage
 
 🛠 Tech Stack
 
@@ -22,9 +22,7 @@ Frontend: React
 
 Backend: Node.js + Express
 
-Database: MongoDB
-
-Authentication: Google OAuth (optional for production)
+Database: MongoDB Atlas
 
 📊 Admin Dashboard
 TYPE
