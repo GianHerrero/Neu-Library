@@ -46,10 +46,9 @@ const API_BASE = process.env.REACT_APP_API_URL;
 function App() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState(""); // NEW: role selection
+  const [role, setRole] = useState(""); 
   const [college, setCollege] = useState("");
   const [major, setMajor] = useState("");
-}
 
   useEffect(() => {
     axios.get(`${API_BASE}/api/user`, { withCredentials: true })
@@ -93,7 +92,6 @@ function App() {
                 required
               />
 
-              {/* Role selection */}
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
@@ -112,6 +110,26 @@ function App() {
       </div>
     );
   }
+
+  return (
+    <div>
+      {user.role === "admin" ? (
+        <AdminDashboard onLogout={handleLogout} />
+      ) : user.role === "faculty" ? (
+        <VisitorDashboard onLogout={handleLogout} email={user.email} />
+      ) : user.role === "student" ? (
+        <StudentDashboard
+          onLogout={handleLogout}
+          email={user.email}
+          college={college}
+          setCollege={setCollege}
+          major={major}
+          setMajor={setMajor}
+        />
+      ) : null}
+    </div>
+  );
+}   
 
   function StudentDashboard({ onLogout, email, college, setCollege, major, setMajor }) {
   const [step, setStep] = useState("select");
