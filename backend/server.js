@@ -8,9 +8,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-    ],
+    origin: ["http://localhost:3000"], https://neu-library-05f4.onrender.com
     credentials: true,
   })
 );
@@ -24,9 +22,12 @@ if (!uri) {
 }
 
 mongoose
-  .connect(uri)
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err.message);
+    process.exit(1);
+  });
 
 // Visitor schema
 const VisitorSchema = new mongoose.Schema({
@@ -49,7 +50,7 @@ app.post("/api/visitor", async (req, res) => {
     }
 
     const visitor = await Visitor.create({ email, college, major, purpose });
-    res.json(visitor);
+    res.status(201).json(visitor);
   } catch (err) {
     console.error("Error saving visitor:", err);
     res.status(500).json({ message: "Error saving visitor" });
@@ -69,4 +70,4 @@ app.get("/api/admin/visitors", async (req, res) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));
