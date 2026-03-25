@@ -3,7 +3,6 @@ import axios from "axios";
 import "./dashboard.css";
 import neuLogo from "./neu-logo.png";
 
-
 const collegeMajors = {
   "College of Accountancy": ["BS Accountancy", "BS Accounting Information System"],
   "College of Agriculture": ["BS Agriculture"],
@@ -42,7 +41,6 @@ const collegeMajors = {
   "School of International Relations": ["AB Foreign Service"]
 };
 
-
 const API_BASE = process.env.REACT_APP_API_URL;
 
 function App() {
@@ -50,6 +48,7 @@ function App() {
   const [email, setEmail] = useState("");
   const [college, setCollege] = useState("");
   const [major, setMajor] = useState("");
+  const [showAdminWarning, setShowAdminWarning] = useState(false);
 
   useEffect(() => {
     axios.get(`${API_BASE}/api/user`, { withCredentials: true })
@@ -60,7 +59,7 @@ function App() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (email === "jcesperanza@neu.edu.ph") {
-      setUser({ email, college, major, role: "admin" });
+      setShowAdminWarning(true); // show warning instead of logging in directly
     } else {
       setUser({ email, college, major, role: "visitor" });
     }
@@ -71,6 +70,7 @@ function App() {
     setEmail("");
     setCollege("");
     setMajor("");
+    setShowAdminWarning(false);
   };
 
   if (!user) {
@@ -117,6 +117,25 @@ function App() {
 
               <button type="submit" className="login-btn">Continue</button>
             </form>
+
+            {showAdminWarning && (
+              <div className="admin-warning">
+                <p>⚠️ Admin dashboard detected for this email.</p>
+                <button
+                  className="login-btn"
+                  onClick={() => setUser({ email, college, major, role: "admin" })}
+                >
+                  Continue as Admin
+                </button>
+                <button
+                  className="login-btn"
+                  style={{ backgroundColor: "#555" }}
+                  onClick={() => setUser({ email, college, major, role: "visitor" })}
+                >
+                  Continue as Visitor
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -128,11 +147,11 @@ function App() {
       {user.role === "admin" ? (
         <AdminDashboard onLogout={handleLogout} />
       ) : (
-        <VisitorDashboard 
-          onLogout={handleLogout} 
-          email={user.email} 
-          college={user.college} 
-          major={user.major} 
+        <VisitorDashboard
+          onLogout={handleLogout}
+          email={user.email}
+          college={user.college}
+          major={user.major}
         />
       )}
     </div>
