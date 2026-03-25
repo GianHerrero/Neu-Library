@@ -46,7 +46,6 @@ const API_BASE = process.env.REACT_APP_API_URL;
 function App() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
   const [college, setCollege] = useState("");
   const [major, setMajor] = useState("");
   const [showAdminWarning, setShowAdminWarning] = useState(false);
@@ -60,18 +59,15 @@ function App() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (email === "jcesperanza@neu.edu.ph") {
-      setShowAdminWarning(true); 
-    } else if (role === "faculty") {
-      setUser({ email, role: "faculty" });
-    } else if (role === "student") {
-      setUser({ email, role: "student" });
+      setShowAdminWarning(true); // show warning instead of logging in directly
+    } else {
+      setUser({ email, college, major, role: "visitor" });
     }
   };
 
   const handleLogout = () => {
     setUser(null);
     setEmail("");
-    setRole("");
     setCollege("");
     setMajor("");
     setShowAdminWarning(false);
@@ -95,14 +91,28 @@ function App() {
               />
 
               <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
+                value={college}
+                onChange={(e) => { setCollege(e.target.value); setMajor(""); }}
                 className="email-input"
                 required
               >
-                <option value="">Select Role</option>
-                <option value="student">Student</option>
-                <option value="faculty">Faculty Member</option>
+                <option value="">Select College</option>
+                {Object.keys(collegeMajors).map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+
+              <select
+                value={major}
+                onChange={(e) => setMajor(e.target.value)}
+                className="email-input"
+                required
+                disabled={!college}
+              >
+                <option value="">Select Major</option>
+                {college && collegeMajors[college].map((m) => (
+                  <option key={m} value={m}>{m}</option>
+                ))}
               </select>
 
               <button type="submit" className="login-btn">Continue</button>
@@ -113,14 +123,14 @@ function App() {
                 <p>⚠️ Admin dashboard detected for this email.</p>
                 <button
                   className="login-btn"
-                  onClick={() => setUser({ email, role: "admin" })}
+                  onClick={() => setUser({ email, college, major, role: "admin" })}
                 >
                   Continue as Admin
                 </button>
                 <button
                   className="login-btn"
                   style={{ backgroundColor: "#555" }}
-                  onClick={() => setUser({ email, role: "faculty" })}
+                  onClick={() => setUser({ email, college, major, role: "visitor" })}
                 >
                   Continue as Visitor
                 </button>
@@ -136,82 +146,15 @@ function App() {
     <div>
       {user.role === "admin" ? (
         <AdminDashboard onLogout={handleLogout} />
-      ) : user.role === "faculty" ? (
-        <VisitorDashboard onLogout={handleLogout} email={user.email} />
-      ) : user.role === "student" ? (
-        <StudentDashboard
+      ) : (
+        <VisitorDashboard
           onLogout={handleLogout}
           email={user.email}
-          college={college}
-          setCollege={setCollege}
-          major={major}
-          setMajor={setMajor}
+          college={user.college}
+          major={user.major}
         />
-      ) : null}
+      )}
     </div>
-  );
-} 
-
-  function StudentDashboard({ onLogout, email, college, setCollege, major, setMajor }) {
-  const [step, setStep] = useState("select");
-  const [message, setMessage] = useState("");
-
-  const handleSelectPurpose = (purpose) => {
-    axios.post(`${API_BASE}/api/visitor`, { email, college, major, purpose })
-      .then(() => {
-        setMessage("Access Granted");
-        setTimeout(() => { onLogout(); }, 2000);
-      })
-      .catch(err => console.error(err));
-  };
-
-  if (step === "select") {
-    return (
-      <div className="dashboard">
-        <div className="overlay">
-          <div className="welcome-box">
-            <h1>Select College and Major</h1>
-            <select
-              value={college}
-              onChange={(e) => { setCollege(e.target.value); setMajor(""); }}
-              className="email-input"
-              required
-            >
-              <option value="">Select College</option>
-              {Object.keys(collegeMajors).map((c) => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-
-            <select
-              value={major}
-              onChange={(e) => setMajor(e.target.value)}
-              className="email-input"
-              required
-              disabled={!college}
-            >
-              <option value="">Select Major</option>
-              {college && collegeMajors[college].map((m) => (
-                <option key={m} value={m}>{m}</option>
-              ))}
-            </select>
-
-            <button className="login-btn" onClick={() => setStep("purpose")}>
-              Continue
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <VisitorDashboard
-      onLogout={onLogout}
-      email={email}
-      college={college}
-      major={major}
-    />
   );
 }
 
