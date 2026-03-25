@@ -69,7 +69,6 @@
   background-color: #c9302c;
 }
 
-/* Cards for purpose selection */
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -97,7 +96,6 @@
   color: green;
 }
 
-/* Admin dashboard table */
 .table-container {
   background: white;
   padding: 20px;
@@ -139,7 +137,7 @@
 
 .visitor-table td:first-child {
   font-weight: bold;
-  color: #004080; /* NEU blue */
+  color: #004080; 
 }
 
 .visitor-table td:last-child {
@@ -147,7 +145,6 @@
   color: #555;
 }
 
-/* Admin warning box */
 .admin-warning {
   margin-top: 20px;
   padding: 15px;
