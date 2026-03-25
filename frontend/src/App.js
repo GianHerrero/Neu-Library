@@ -4,41 +4,35 @@ import "./dashboard.css";
 import neuLogo from "./neu-logo.png";
 
 const collegeMajors = {
-  "College of Accountancy": ["BS Accountancy", "BS Accounting Information System"],
-  "College of Agriculture": ["BS Agriculture"],
-  "College of Arts and Sciences": [
-    "AB Economics","AB Political Science","BS Biology","BS Psychology","Bachelor of Public Administration"
-  ],
-  "College of Business Administration": [
-    "BSBA – Financial Management","BSBA – Human Resource Development Management","BSBA – Legal Management",
-    "BSBA – Marketing Management","BS Entrepreneurship","BS Real Estate Management"
-  ],
-  "College of Communication": ["AB Broadcasting","AB Communication","AB Journalism"],
-  "College of Informatics and Computing Studies (CICS)": [
-    "Bachelor of Library and Information Science","BS Computer Science",
+  "College of Accountancy": ["Faculty Staff Member", "BS Accountancy", "BS Accounting Information System",],
+  "College of Agriculture": ["Faculty Staff Member", "BS Agriculture"],
+  "College of Arts and Sciences": ["Faculty Staff Member", "AB Economics","AB Political Science","BS Biology","BS Psychology","Bachelor of Public Administration"],
+  "College of Business Administration": ["Faculty Staff Member", "BSBA – Financial Management","BSBA – Human Resource Development Management","BSBA – Legal Management",
+    "BSBA – Marketing Management","BS Entrepreneurship","BS Real Estate Management"],
+  "College of Communication": ["Faculty Staff Member", "AB Broadcasting","AB Communication","AB Journalism"],
+  "College of Informatics and Computing Studies (CICS)": 
+    ["Faculty Staff Member", "Bachelor of Library and Information Science","BS Computer Science",
     "BS Entertainment & Multimedia Computing (Digital Animation)",
     "BS Entertainment & Multimedia Computing (Game Development)",
-    "BS Information Technology","BS Information System"
-  ],
-  "College of Criminology": ["BS Criminology"],
-  "College of Education": [
-    "BEED (Elementary Education)","Preschool Education","Special Education",
-    "BSED English","BSED Filipino","BSED Mathematics","BSED Science","BSED Social Studies","BSED MAPEH","BSED TLE"
-  ],
+    "BS Information Technology","BS Information System"],
+  "College of Criminology": ["Faculty Staff Member", "BS Criminology"],
+  "College of Education": 
+    ["Faculty Staff Member", "BEED (Elementary Education)","Preschool Education","Special Education",
+    "BSED English","BSED Filipino","BSED Mathematics","BSED Science","BSED Social Studies","BSED MAPEH","BSED TLE"],
   "College of Engineering and Architecture": [
-    "BS Architecture","BS Astronomy","BS Civil Engineering","BS Electrical Engineering",
+    "Faculty Staff Member", "BS Architecture","BS Astronomy","BS Civil Engineering","BS Electrical Engineering",
     "BS Electronics Engineering","BS Industrial Engineering","BS Mechanical Engineering"
   ],
-  "College of Medical Technology": ["BS Medical Technology"],
-  "College of Midwifery": ["Diploma in Midwifery"],
+  "College of Medical Technology": ["Faculty Staff Member", "BS Medical Technology"],
+  "College of Midwifery": ["Faculty Staff Member", "Diploma in Midwifery"],
   "College of Music": [
-    "Bachelor of Music – Choral Conducting","Bachelor of Music – Music Education",
+    "Faculty Staff Member", "Bachelor of Music – Choral Conducting","Bachelor of Music – Music Education",
     "Bachelor of Music – Piano","Bachelor of Music – Voice"
   ],
-  "College of Nursing": ["BS Nursing"],
-  "College of Physical Therapy": ["BS Physical Therapy"],
-  "College of Respiratory Therapy": ["BS Respiratory Therapy"],
-  "School of International Relations": ["AB Foreign Service"]
+  "College of Nursing": ["Faculty Staff Member", "BS Nursing"],
+  "College of Physical Therapy": ["Faculty Staff Member", "BS Physical Therapy"],
+  "College of Respiratory Therapy": ["Faculty Staff Member", "BS Respiratory Therapy"],
+  "School of International Relations": ["Faculty Staff Member", "AB Foreign Service"]
 };
 
 const API_BASE = process.env.REACT_APP_API_URL;
@@ -109,7 +103,7 @@ function App() {
                 required
                 disabled={!college}
               >
-                <option value="">Select Major</option>
+                <option value="">Select Role</option>
                 {college && collegeMajors[college].map((m) => (
                   <option key={m} value={m}>{m}</option>
                 ))}
