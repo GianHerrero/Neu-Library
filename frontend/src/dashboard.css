@@ -69,6 +69,7 @@
   background-color: #c9302c;
 }
 
+/* Cards for purpose selection */
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -96,6 +97,7 @@
   color: green;
 }
 
+/* Admin dashboard table */
 .table-container {
   background: white;
   padding: 20px;
@@ -103,8 +105,8 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   max-width: 900px;
   margin: 40px auto;
-  overflow-y: auto;      
-  max-height: 400px;     
+  overflow-y: auto;
+  max-height: 400px;
 }
 
 .visitor-table {
@@ -137,7 +139,7 @@
 
 .visitor-table td:first-child {
   font-weight: bold;
-  color: #004080; 
+  color: #004080; /* NEU blue */
 }
 
 .visitor-table td:last-child {
@@ -145,14 +147,14 @@
   color: #555;
 }
 
-
+/* Admin warning box */
 .admin-warning {
   margin-top: 20px;
   padding: 15px;
-  border: 2px solid #d9534f;       
+  border: 2px solid #d9534f;
   border-radius: 8px;
-  background-color: #fff3f3;       
-  color: #d9534f;                  
+  background-color: #fff3f3;
+  color: #d9534f;
   font-weight: bold;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -169,7 +171,7 @@
 }
 
 .admin-warning button:first-of-type {
-  background-color: #004080; 
+  background-color: #004080;
   color: white;
 }
 .admin-warning button:first-of-type:hover {
