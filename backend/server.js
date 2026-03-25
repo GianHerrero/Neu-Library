@@ -8,7 +8,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:3000"], https://neu-library-05f4.onrender.com
+    origin: ["http://localhost:3000", "https://neu-library-05f4.onrender.com"], 
     credentials: true,
   })
 );
