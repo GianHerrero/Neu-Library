@@ -144,3 +144,42 @@
   font-size: 13px;
   color: #555;
 }
+
+
+.admin-warning {
+  margin-top: 20px;
+  padding: 15px;
+  border: 2px solid #d9534f;       
+  border-radius: 8px;
+  background-color: #fff3f3;       
+  color: #d9534f;                  
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.admin-warning button {
+  margin: 10px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.admin-warning button:first-of-type {
+  background-color: #004080; 
+  color: white;
+}
+.admin-warning button:first-of-type:hover {
+  background-color: #002d5a;
+}
+
+.admin-warning button:last-of-type {
+  background-color: #555;
+  color: white;
+}
+.admin-warning button:last-of-type:hover {
+  background-color: #333;
+}
