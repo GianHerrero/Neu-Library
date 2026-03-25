@@ -3,7 +3,7 @@ import axios from "axios";
 import "./dashboard.css";
 import neuLogo from "./neu-logo.png";
 
-// College → Majors mapping
+
 const collegeMajors = {
   "College of Accountancy": ["BS Accountancy", "BS Accounting Information System"],
   "College of Agriculture": ["BS Agriculture"],
@@ -42,7 +42,7 @@ const collegeMajors = {
   "School of International Relations": ["AB Foreign Service"]
 };
 
-// Use environment variable for backend URL
+
 const API_BASE = process.env.REACT_APP_API_URL;
 
 function App() {
