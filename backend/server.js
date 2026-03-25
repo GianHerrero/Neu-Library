@@ -38,17 +38,14 @@ const VisitorSchema = new mongoose.Schema({
 });
 const Visitor = mongoose.model("Visitor", VisitorSchema);
 
-
 app.post("/api/visitor", async (req, res) => {
   try {
-    console.log("Visitor payload:", req.body);
     const { email, role, college, major, purpose } = req.body;
 
     if (!email || !role || !purpose) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Students must provide college + major
     if (role === "student" && (!college || !major)) {
       return res.status(400).json({ message: "College and major required for students" });
     }
@@ -63,7 +60,6 @@ app.post("/api/visitor", async (req, res) => {
 
     res.status(201).json({ message: "Access Granted", visitor });
   } catch (err) {
-    console.error("Error saving visitor:", err);
     res.status(500).json({ message: "Error saving visitor" });
   }
 });
