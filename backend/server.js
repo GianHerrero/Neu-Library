@@ -7,12 +7,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://neu-library-05f4.onrender.com"],
+    origin: ["http://localhost:3000", "https://neu-library-05f4.onrender.com"], 
     credentials: true,
   })
 );
 app.use(express.json());
-
 
 const uri = process.env.MONGO_URI;
 if (!uri) {
@@ -30,9 +29,8 @@ mongoose
 
 const VisitorSchema = new mongoose.Schema({
   email: { type: String, required: true },
-  role: { type: String, required: true },   
-  college: { type: String },               
-  major: { type: String },                 
+  college: { type: String, required: true },
+  major: { type: String, required: true },
   purpose: { type: String, required: true },
   date: { type: Date, default: Date.now },
 });
@@ -40,26 +38,17 @@ const Visitor = mongoose.model("Visitor", VisitorSchema);
 
 app.post("/api/visitor", async (req, res) => {
   try {
-    const { email, role, college, major, purpose } = req.body;
+    console.log("Visitor payload:", req.body);
+    const { email, college, major, purpose } = req.body;
 
-    if (!email || !role || !purpose) {
+    if (!email || !college || !major || !purpose) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    if (role === "student" && (!college || !major)) {
-      return res.status(400).json({ message: "College and major required for students" });
-    }
-
-    const visitor = await Visitor.create({
-      email,
-      role,
-      college: college || null,
-      major: major || null,
-      purpose,
-    });
-
-    res.status(201).json({ message: "Access Granted", visitor });
+    const visitor = await Visitor.create({ email, college, major, purpose });
+    res.status(201).json(visitor);
   } catch (err) {
+    console.error("Error saving visitor:", err);
     res.status(500).json({ message: "Error saving visitor" });
   }
 });
