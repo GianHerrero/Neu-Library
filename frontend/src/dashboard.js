@@ -1,6 +1,6 @@
 import React from "react";
-import "./Dashboard.css"; // we'll style separately
-import neuLogo from "c:\Users\GIAN HERRERO\Downloads\neu-logo.png"; // place your NEU logo in /src/assets
+import "./Dashboard.css"; 
+import neuLogo from "c:\Users\GIAN HERRERO\Downloads\neu-logo.png"; 
 
 export default function Dashboard() {
   return (
