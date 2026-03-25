@@ -184,28 +184,31 @@ function AdminDashboard({ onLogout }) {
         <div className="welcome-box">
           <h1>Admin Dashboard</h1>
           <button onClick={onLogout} className="logout-btn">Logout</button>
-          <table className="visitor-table">
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>College</th>
-                <th>Major</th>
-                <th>Purpose</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visitors.map((v, i) => (
-                <tr key={i}>
-                  <td>{v.email}</td>
-                  <td>{v.college}</td>
-                  <td>{v.major}</td>
-                  <td>{v.purpose}</td>
-                  <td>{new Date(v.date).toLocaleString()}</td>
+
+          <div className="table-container">
+            <table className="visitor-table">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>College</th>
+                  <th>Major</th>
+                  <th>Purpose</th>
+                  <th>Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {visitors.map((v, i) => (
+                  <tr key={i}>
+                    <td>{v.email}</td>
+                    <td>{v.college}</td>
+                    <td>{v.major}</td>
+                    <td>{v.purpose}</td>
+                    <td>{new Date(v.date).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
