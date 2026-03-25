@@ -46,9 +46,10 @@ const API_BASE = process.env.REACT_APP_API_URL;
 function App() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState(""); 
+  const [role, setRole] = useState("");
   const [college, setCollege] = useState("");
   const [major, setMajor] = useState("");
+  const [showAdminWarning, setShowAdminWarning] = useState(false);
 
   useEffect(() => {
     axios.get(`${API_BASE}/api/user`, { withCredentials: true })
@@ -59,7 +60,7 @@ function App() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (email === "jcesperanza@neu.edu.ph") {
-      setUser({ email, role: "admin" });
+      setShowAdminWarning(true); 
     } else if (role === "faculty") {
       setUser({ email, role: "faculty" });
     } else if (role === "student") {
@@ -73,6 +74,7 @@ function App() {
     setRole("");
     setCollege("");
     setMajor("");
+    setShowAdminWarning(false);
   };
 
   if (!user) {
@@ -105,6 +107,25 @@ function App() {
 
               <button type="submit" className="login-btn">Continue</button>
             </form>
+
+            {showAdminWarning && (
+              <div className="admin-warning">
+                <p>⚠️ Admin dashboard detected for this email.</p>
+                <button
+                  className="login-btn"
+                  onClick={() => setUser({ email, role: "admin" })}
+                >
+                  Continue as Admin
+                </button>
+                <button
+                  className="login-btn"
+                  style={{ backgroundColor: "#555" }}
+                  onClick={() => setUser({ email, role: "faculty" })}
+                >
+                  Continue as Visitor
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -129,7 +150,7 @@ function App() {
       ) : null}
     </div>
   );
-}   
+} 
 
   function StudentDashboard({ onLogout, email, college, setCollege, major, setMajor }) {
   const [step, setStep] = useState("select");
